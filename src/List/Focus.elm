@@ -252,6 +252,21 @@ map f focus =
     -->   , (5, 5, "after")
     -->   ]
 
+    -- Getting all elements after the focus.
+    singleton 1
+      |> append [2, 3, 4, 5]
+      |> prepend [0]
+      |> next
+      |> Maybe.map (mapParts
+        { before = \_ _ -> Nothing
+        , focus = \_ _ -> Nothing
+        , after = \_ -> Just
+        })
+       |> Maybe.map toList
+       |> Maybe.withDefault []
+       |> List.filterMap identity
+       --> [3, 4, 5]
+
 -}
 mapParts :
     { before : Int -> a -> b
